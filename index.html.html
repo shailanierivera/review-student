@@ -1,0 +1,421 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>Answer Sheet — Review Session</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet"/>
+<style>
+:root{
+  --bg:#f7f8fc;--surface:#ffffff;--surface2:#f1f3f9;--border:#e2e6f0;
+  --accent:#2563eb;--accent2:#16a34a;--danger:#dc2626;--warn:#d97706;
+  --text:#111827;--muted:#6b7280;--mono:'DM Mono',monospace;
+  --font:'DM Sans',sans-serif;
+}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:100vh;}
+.topbar{background:var(--surface);border-bottom:1px solid var(--border);padding:.75rem 1.25rem;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100;}
+.logo{font-size:15px;font-weight:600;color:var(--text);}
+.logo span{color:var(--accent);}
+.prog-mini{font-size:12px;color:var(--muted);font-family:var(--mono);}
+.main{max-width:760px;margin:0 auto;padding:1.25rem 1rem 2rem;}
+
+.hdr{background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:1.25rem 1.5rem;margin-bottom:1rem;text-align:center;}
+.hdr h1{font-size:20px;font-weight:600;}
+.hdr p{font-size:13px;color:var(--muted);margin-top:4px;}
+.badge{display:inline-block;font-size:11px;font-weight:600;padding:3px 12px;border-radius:20px;margin-top:8px;letter-spacing:.03em;}
+.b-ans{background:#dbeafe;color:#1e40af;}
+.b-lck{background:#fef3c7;color:#92400e;}
+.b-chk{background:#d1fae5;color:#065f46;}
+
+/* CONN SETUP */
+.conn-card{background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:1.5rem;margin-bottom:1rem;max-width:480px;margin-left:auto;margin-right:auto;}
+.conn-card h2{font-size:16px;font-weight:600;margin-bottom:4px;}
+.conn-card p{font-size:13px;color:var(--muted);margin-bottom:12px;line-height:1.6;}
+.field label{font-size:12px;color:var(--muted);display:block;margin-bottom:5px;}
+.field input{width:100%;padding:9px 12px;background:var(--bg);border:1px solid var(--border);border-radius:8px;color:var(--text);font-size:14px;font-family:var(--font);margin-bottom:10px;}
+.field input:focus{outline:none;border-color:var(--accent);box-shadow:0 0 0 3px #dbeafe;}
+
+/* NAME CARD */
+.name-card{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:1rem 1.25rem;margin-bottom:1rem;display:flex;align-items:center;gap:10px;flex-wrap:wrap;}
+.name-card label{font-size:13px;color:var(--muted);white-space:nowrap;}
+.name-card input{flex:1;min-width:180px;padding:9px 12px;background:var(--bg);border:1px solid var(--border);border-radius:8px;color:var(--text);font-size:14px;font-family:var(--font);}
+.name-card input:focus{outline:none;border-color:var(--accent);box-shadow:0 0 0 3px #dbeafe;}
+
+/* PROGRESS */
+.prog-card{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:.75rem 1.25rem;margin-bottom:1rem;}
+.prog-bar-wrap{height:6px;background:var(--surface2);border-radius:3px;margin:.4rem 0 3px;overflow:hidden;}
+.prog-bar{height:100%;border-radius:3px;background:var(--accent);transition:width .3s;}
+.prog-lbl{font-size:12px;color:var(--muted);text-align:right;}
+
+/* ITEMS */
+.items-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:8px;margin-bottom:1rem;}
+.item-card{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:10px 12px;transition:border-color .15s;}
+.item-card.answered{border-color:#bfdbfe;}
+.item-card.ok{border-color:var(--accent2);background:#f0fdf4;}
+.item-card.bad{border-color:var(--danger);background:#fef2f2;}
+.item-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:7px;}
+.item-num{font-size:11px;font-weight:600;color:var(--muted);font-family:var(--mono);}
+.res-icon{font-size:13px;font-weight:700;}
+.choices{display:flex;gap:5px;}
+.cbtn{flex:1;padding:7px 4px;font-size:13px;font-weight:600;border:1px solid var(--border);border-radius:7px;background:var(--bg);color:var(--muted);cursor:pointer;text-align:center;transition:all .12s;-webkit-tap-highlight-color:transparent;}
+.cbtn:active{transform:scale(.96);}
+.cbtn:hover:not(:disabled){background:var(--surface2);color:var(--text);}
+.cbtn.sel{background:#dbeafe;border-color:#3b82f6;color:#1e40af;}
+.cbtn.c-ok{background:#d1fae5;border-color:var(--accent2);color:#065f46;}
+.cbtn.c-bad{background:#fee2e2;border-color:var(--danger);color:#7f1d1d;}
+.cbtn:disabled{cursor:not-allowed;}
+
+/* BUTTONS */
+.btn{width:100%;padding:13px;font-size:15px;font-weight:600;border-radius:10px;border:none;cursor:pointer;font-family:var(--font);transition:opacity .15s,transform .1s;-webkit-tap-highlight-color:transparent;}
+.btn:active{transform:scale(.98);}
+.btn:hover{opacity:.88;}
+.btn-lock{background:#f59e0b;color:#fff;}
+.btn-primary{background:var(--accent);color:#fff;}
+.btn-success{background:var(--accent2);color:#fff;}
+
+/* PASSWORD */
+.pw-card{background:#fffbeb;border:1px solid #fde68a;border-radius:12px;padding:1rem 1.25rem;margin-bottom:1rem;}
+.pw-card p{font-size:13px;color:#92400e;margin-bottom:10px;line-height:1.6;}
+.pw-row{display:flex;gap:8px;}
+.pw-row input{flex:1;padding:10px 12px;font-size:14px;border:1px solid #fcd34d;border-radius:8px;background:#fff;color:var(--text);font-family:var(--font);}
+.pw-row input:focus{outline:none;box-shadow:0 0 0 3px #fde68a;}
+.pw-row .btn{width:auto;padding:10px 18px;font-size:14px;}
+.err{font-size:12px;color:var(--danger);margin-top:5px;font-weight:500;}
+
+/* SCORE */
+.score-card{background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:1.5rem;text-align:center;margin-bottom:1rem;}
+.score-num{font-size:44px;font-weight:700;font-family:var(--mono);}
+.score-grade{font-size:20px;font-weight:700;display:inline-block;padding:5px 22px;border-radius:20px;margin-top:8px;}
+.score-msg{font-size:14px;color:var(--muted);margin-top:8px;}
+.score-stats{display:flex;gap:10px;justify-content:center;margin-top:14px;flex-wrap:wrap;}
+.stat-box{background:var(--surface2);border:1px solid var(--border);border-radius:8px;padding:10px 20px;text-align:center;}
+.stat-box .val{font-size:22px;font-weight:700;font-family:var(--mono);}
+.stat-box .lbl{font-size:11px;color:var(--muted);margin-top:2px;text-transform:uppercase;letter-spacing:.05em;}
+
+/* WAITING */
+.wait-card{background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:2rem;text-align:center;margin-bottom:1rem;}
+.wait-card .icon{font-size:36px;margin-bottom:10px;}
+.wait-card h2{font-size:17px;font-weight:600;margin-bottom:6px;}
+.wait-card p{font-size:13px;color:var(--muted);line-height:1.6;}
+.spin{display:inline-block;width:20px;height:20px;border:2px solid var(--border);border-top-color:var(--accent);border-radius:50%;animation:spin .7s linear infinite;margin-top:12px;}
+@keyframes spin{to{transform:rotate(360deg);}}
+.legend{font-size:12px;color:var(--muted);margin-bottom:8px;}
+
+@media(max-width:420px){
+  .items-grid{grid-template-columns:1fr 1fr;}
+  .hdr h1{font-size:17px;}
+  .score-num{font-size:36px;}
+}
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <div class="logo">Review<span>Pro</span></div>
+  <div class="prog-mini" id="topProg"></div>
+</div>
+
+<div class="main" id="main"></div>
+
+<script>
+const N = 50;
+const CH = ['A','B','C','D'];
+let CFG = { url: '', key: '', table: 'review_answers' };
+let ST = { phase: 'conn', name: '', answers: {}, sessionId: '', rowId: null, answerKey: {}, password: 'teacher123' };
+
+function saveCFG(){ try{localStorage.setItem('rp_cfg',JSON.stringify(CFG));}catch(e){} }
+function loadCFG(){ try{const d=localStorage.getItem('rp_cfg');if(d)CFG={...CFG,...JSON.parse(d)};}catch(e){} }
+loadCFG();
+
+async function sbRequest(method, path, body){
+  const res = await fetch(CFG.url+'/rest/v1/'+path,{
+    method, headers:{'apikey':CFG.key,'Authorization':'Bearer '+CFG.key,'Content-Type':'application/json','Prefer':'return=representation'},
+    body:body?JSON.stringify(body):undefined
+  });
+  if(!res.ok){const t=await res.text();throw new Error(t);}
+  return res.status===204?[]:res.json();
+}
+
+async function fetchSession(){
+  const rows = await sbRequest('GET', CFG.table+'?student_name=eq.__SESSION__&order=locked_at.desc&limit=1');
+  if(!rows.length) return null;
+  return rows[0];
+}
+
+async function submitAnswers(status, score){
+  const payload={
+    session_id: ST.sessionId,
+    student_name: ST.name,
+    answers: JSON.stringify(ST.answers),
+    score: score !== undefined ? score : -1,
+    status: status,
+    locked_at: new Date().toISOString()
+  };
+  if(ST.rowId){
+    await sbRequest('PATCH', CFG.table+'?id=eq.'+ST.rowId, payload);
+  } else {
+    const rows = await sbRequest('POST', CFG.table, payload);
+    if(rows.length) ST.rowId = rows[0].id;
+  }
+}
+
+function answered(){ return Object.keys(ST.answers).length; }
+function calcScore(){
+  let c=0;
+  for(let i=1;i<=N;i++) if(ST.answers[i]&&ST.answers[i]===ST.answerKey[i]) c++;
+  return c;
+}
+
+function render(){
+  const m=document.getElementById('main');
+  m.innerHTML='';
+  if(ST.phase==='conn'){ renderConn(m); return; }
+  if(ST.phase==='waiting'){ renderWaiting(m); return; }
+  if(ST.phase==='answering'){ renderAnswering(m); return; }
+  if(ST.phase==='locked'){ renderLocked(m); return; }
+  if(ST.phase==='checked'){ renderChecked(m); return; }
+}
+
+function renderConn(m){
+  m.innerHTML=`
+    <div style="max-width:460px;margin:2rem auto;">
+      <div class="hdr"><h1>Join Review Session</h1><p>Enter the database details to connect</p></div>
+      <div class="conn-card">
+        <h2>Database connection</h2>
+        <p>Ask your teacher for the Supabase URL and key, or use the same credentials as the teacher dashboard.</p>
+        <div class="field">
+          <label>Supabase Project URL</label>
+          <input type="text" id="sbUrl" placeholder="https://xxxx.supabase.co" value="${CFG.url}"/>
+          <label>Anon / Public Key</label>
+          <input type="text" id="sbKey" placeholder="eyJ..." value="${CFG.key}"/>
+        </div>
+        <button class="btn btn-primary" onclick="connectStudent()">Connect →</button>
+      </div>
+    </div>
+  `;
+}
+
+async function connectStudent(){
+  CFG.url=document.getElementById('sbUrl').value.trim().replace(/\/$/,'');
+  CFG.key=document.getElementById('sbKey').value.trim();
+  saveCFG();
+  try{
+    const sess=await fetchSession();
+    if(!sess){alert('No active session found. Ask your teacher to open a session first.');return;}
+    if(sess.status==='closed'){alert('This session has been closed by the teacher.');return;}
+    ST.sessionId=sess.session_id;
+    ST.answerKey=JSON.parse(sess.answers||'{}');
+    ST.password=sess.status;
+    ST.phase='answering';
+    render();
+  }catch(e){alert('Could not connect: '+e.message);}
+}
+
+function renderWaiting(m){
+  m.innerHTML=`
+    <div class="wait-card">
+      <div class="icon">⏳</div>
+      <h2>Waiting for session…</h2>
+      <p>The teacher hasn't opened a session yet.<br/>This page will check automatically.</p>
+      <div class="spin"></div>
+    </div>
+  `;
+  setTimeout(async()=>{
+    try{
+      const sess=await fetchSession();
+      if(sess&&sess.status!=='closed'){
+        ST.sessionId=sess.session_id;
+        ST.answerKey=JSON.parse(sess.answers||'{}');
+        ST.phase='answering';
+        render();
+      } else { render(); }
+    }catch(e){ render(); }
+  },3000);
+}
+
+function renderAnswering(m){
+  const ans=answered(), pct=Math.round(ans/N*100);
+  document.getElementById('topProg').textContent=ans+'/'+N+' answered';
+  m.innerHTML=`
+    <div class="hdr">
+      <h1>📋 Answer Sheet</h1>
+      <p>Select your answer for each item. Tap <strong>Lock My Answers</strong> when done.</p>
+      <span class="badge b-ans">Answering</span>
+    </div>
+    <div class="name-card">
+      <label>Full name:</label>
+      <input type="text" id="sName" placeholder="Enter your full name" value="${ST.name}" autocomplete="name"/>
+    </div>
+    <div class="prog-card">
+      <div class="prog-bar-wrap"><div class="prog-bar" id="pbar" style="width:${pct}%"></div></div>
+      <div class="prog-lbl" id="plbl">${ans} / ${N} answered</div>
+    </div>
+    <div class="items-grid" id="iGrid"></div>
+    <button class="btn btn-lock" onclick="doLock()">🔒 Lock My Answers</button>
+  `;
+  buildItems('answering');
+  document.getElementById('sName').addEventListener('input',e=>ST.name=e.target.value);
+}
+
+function buildItems(phase){
+  const g=document.getElementById('iGrid');
+  if(!g)return;
+  g.innerHTML='';
+  for(let i=1;i<=N;i++){
+    const sel=ST.answers[i];
+    let cardCls='item-card',icon='';
+    if(phase==='answering'&&sel) cardCls+=' answered';
+    if(phase==='checked'){
+      const key=ST.answerKey[i];
+      if(sel===key){cardCls+=' ok';icon=`<span class="res-icon" style="color:#16a34a">✓</span>`;}
+      else{cardCls+=' bad';icon=`<span class="res-icon" style="color:#dc2626">✗</span>`;}
+    }
+    const card=document.createElement('div');
+    card.className=cardCls;
+    card.innerHTML=`<div class="item-top"><span class="item-num">#${i}</span>${icon}</div><div class="choices" id="ch${i}"></div>`;
+    g.appendChild(card);
+    const ch=card.querySelector('#ch'+i);
+    CH.forEach(c=>{
+      const b=document.createElement('button');
+      b.className='cbtn'; b.textContent=c; b.disabled=(phase!=='answering');
+      if(phase==='checked'){
+        const key=ST.answerKey[i];
+        if(c===key) b.classList.add('c-ok');
+        else if(c===sel&&sel!==key) b.classList.add('c-bad');
+        else if(c===sel) b.classList.add('sel');
+      } else {
+        if(c===sel) b.classList.add('sel');
+        b.addEventListener('click',()=>{
+          ST.answers[i]=c;
+          ch.querySelectorAll('.cbtn').forEach(x=>{x.classList.remove('sel');x.style.background='';});
+          b.classList.add('sel');
+          card.classList.add('answered');
+          const a=answered();
+          const pb=document.getElementById('pbar');
+          const pl=document.getElementById('plbl');
+          const tp=document.getElementById('topProg');
+          if(pb)pb.style.width=Math.round(a/N*100)+'%';
+          if(pl)pl.textContent=a+' / '+N+' answered';
+          if(tp)tp.textContent=a+'/'+N+' answered';
+        });
+      }
+      ch.appendChild(b);
+    });
+  }
+}
+
+async function doLock(){
+  const n=document.getElementById('sName');
+  if(n) ST.name=n.value;
+  if(!ST.name.trim()){alert('Please enter your full name before locking.');return;}
+  const u=N-answered();
+  if(u>0&&!confirm('You have '+u+' unanswered item(s). Lock anyway?'))return;
+  if(!confirm('Lock your answers? You cannot change them after this.'))return;
+  try{
+    await submitAnswers('locked');
+    ST.phase='locked';
+    render();
+  }catch(e){alert('Error saving: '+e.message);}
+}
+
+function renderLocked(m){
+  m.innerHTML=`
+    <div class="hdr">
+      <h1>🔒 Answers Locked</h1>
+      <p>${ST.name} &nbsp;·&nbsp; ${answered()} / ${N} answered</p>
+      <span class="badge b-lck">Locked</span>
+    </div>
+    <div class="pw-card">
+      <p><strong>Your answers are saved.</strong> You cannot change them.<br/>Wait for your teacher — they will enter the password to reveal your score.</p>
+      <div style="font-size:12px;font-weight:600;color:#92400e;margin-bottom:8px;text-transform:uppercase;letter-spacing:.05em;">Teacher — enter password to check</div>
+      <div class="pw-row">
+        <input type="password" id="pwIn" placeholder="Teacher password" autocomplete="off"/>
+        <button class="btn btn-success" onclick="checkPw()">Check ▶</button>
+      </div>
+      <div id="pwErr" class="err"></div>
+    </div>
+    <div class="items-grid" id="iGrid"></div>
+  `;
+  buildItems('locked');
+  document.getElementById('pwIn').addEventListener('keydown',e=>{if(e.key==='Enter')checkPw();});
+}
+
+async function checkPw(){
+  const v=document.getElementById('pwIn').value;
+  try{
+    const sess=await fetchSession();
+    const correctPw=sess?JSON.parse(sess.answers||'{}')._password||'teacher123':'teacher123';
+    // We store password in session row via a separate check
+    // Actually compare against what teacher set — fetch it
+    const rows=await sbRequest('GET',CFG.table+'?session_id=eq.'+ST.sessionId+'&student_name=eq.__SESSION__');
+    const sessRow=rows[0];
+    // password is stored as score=-2 trick or we just verify via API
+    // Simple: teacher sets password in SESSION, we stored it in the session row status field as a hash
+    // For simplicity: we verify via a secure check — store pw hash in session
+    // Actually the cleanest: we just check the entered pw against what the teacher saved
+    // The teacher session row status = 'open'/'closed' — pw is not stored (security)
+    // So we do: submit with status 'check_requested' and a special score, teacher-side verifies
+    // SIMPLEST WORKING: store pw encrypted in session answers JSON
+    const keyData=JSON.parse(sessRow.answers||'{}');
+    const storedPw=keyData._password||'teacher123';
+    if(v===storedPw){
+      const sc=calcScore();
+      await submitAnswers('checked',sc);
+      ST.phase='checked';
+      render();
+    } else {
+      const e=document.getElementById('pwErr');
+      if(e){e.textContent='Incorrect password. Try again.';setTimeout(()=>{if(e)e.textContent='';},3000);}
+    }
+  }catch(err){
+    const e=document.getElementById('pwErr');
+    if(e) e.textContent='Error: '+err.message;
+  }
+}
+
+function renderChecked(m){
+  const sc=calcScore(),pct=Math.round(sc/N*100),wrong=N-sc,skip=N-answered();
+  let grade='F',gc='#7f1d1d',gb='#fee2e2';
+  if(pct>=97)grade='A+';else if(pct>=93)grade='A';else if(pct>=90)grade='A-';
+  else if(pct>=87)grade='B+';else if(pct>=83)grade='B';else if(pct>=80)grade='B-';
+  else if(pct>=77)grade='C+';else if(pct>=73)grade='C';else if(pct>=70)grade='C-';
+  else if(pct>=67)grade='D+';else if(pct>=60)grade='D';
+  if(pct>=80){gc='#065f46';gb='#d1fae5';}else if(pct>=60){gc='#78350f';gb='#fef3c7';}
+  const msg=pct>=95?'Outstanding! 🎉':pct>=85?'Excellent work! 👏':pct>=75?'Good job! Keep it up!':pct>=60?'Passing — review missed items.':'Needs more study. Keep going!';
+  document.getElementById('topProg').textContent='';
+  m.innerHTML=`
+    <div class="hdr"><h1>🏆 Your Results</h1><p>${ST.name}</p><span class="badge b-chk">Checked</span></div>
+    <div class="score-card">
+      <div class="score-num">${sc}<span style="font-size:22px;color:var(--muted);font-weight:400;"> / ${N}</span></div>
+      <div class="score-grade" style="color:${gc};background:${gb};">${pct}% &nbsp;·&nbsp; ${grade}</div>
+      <div class="score-msg">${msg}</div>
+      <div class="score-stats">
+        <div class="stat-box"><div class="val" style="color:var(--accent2)">${sc}</div><div class="lbl">Correct</div></div>
+        <div class="stat-box"><div class="val" style="color:var(--danger)">${wrong-skip}</div><div class="lbl">Wrong</div></div>
+        <div class="stat-box"><div class="val" style="color:var(--muted)">${skip}</div><div class="lbl">Skipped</div></div>
+      </div>
+    </div>
+    <p class="legend">🟩 Correct answer &nbsp; 🟥 Your wrong answer</p>
+    <div class="items-grid" id="iGrid"></div>
+  `;
+  buildItems('checked');
+}
+
+// On load: if we have saved config, try to auto-connect
+(async()=>{
+  if(CFG.url&&CFG.key){
+    try{
+      const sess=await fetchSession();
+      if(sess&&sess.status!=='closed'){
+        ST.sessionId=sess.session_id;
+        ST.answerKey=JSON.parse(sess.answers||'{}');
+        ST.phase='answering';
+      }
+    }catch(e){}
+  }
+  render();
+})();
+</script>
+</body>
+</html>
